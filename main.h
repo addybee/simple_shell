@@ -17,7 +17,7 @@ char **get_argv(char *command);
 int  run_shell(char **argv);
 void free_argv(char **argv);
 int check_env(char *command);
-void check_exit(char *cmd);
+void check_exit(char **cmd);
 void str_strip(char *s);
 char *get_env(char *name);
 char *_strcpy(char *dest, char *src);
@@ -31,4 +31,5 @@ int _strncmp(char *s1, char *s2, size_t n);
 size_t _strcspn(char *s, const char *reject);
 size_t _strspn(char *s, const char *accept);
 char *_strtok(char * str, const char *delim);
+int argv_len(char **argv);
 #endif

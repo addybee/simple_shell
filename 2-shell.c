@@ -27,7 +27,6 @@ int run_shell(char **argv)
 			input_line = NULL;
 			continue;
 		}
-		check_exit(input_line);
 		if (check_env(input_line))
 			continue;
 		argv = get_argv(input_line);
@@ -55,7 +54,7 @@ void print_prompt(void)
 
 	if (isatty(0))
 	{
-		prompt = "@#cisfun$ ";
+		prompt = "$ ";
 		write(1, prompt, _strlen(prompt));
 	}
 }
@@ -79,4 +78,19 @@ void free_argv(char **argv)
 	}
 	free(argv);
 	argv = NULL;
+}
+
+/**
+ * argv_len - gets the length of an array
+ * @argv: pointer to array of the arguement
+ * Return: length of element in the array
+ */
+
+int argv_len(char **argv)
+{
+	int i = 0;
+
+	while (argv[i])
+	i++;
+	return i;
 }
