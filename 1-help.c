@@ -10,6 +10,7 @@ void exec_cmd(char **argv)
 	pid_t pid = 0;
 	int wstatus;
 
+	check_exit(argv);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -17,8 +18,9 @@ void exec_cmd(char **argv)
 	}
 	else if (pid == 0)
 	{
-		char *cmd = handle_path(argv[0]);
+		char *cmd;
 
+		cmd = handle_path(argv[0]);
 		if (cmd == NULL)
 		{
 			char *sh = "./hsh: 1: ", *rt = ": not found\n";
@@ -37,7 +39,12 @@ void exec_cmd(char **argv)
 			exit(126);
 		}
 	}
-	wait(&wstatus);
+	if (wait(&wstatus) == -1)
+	{
+		perror("wait");
+		free_argv(argv);
+		exit(EXIT_FAILURE);
+	}
 	free_argv(argv);
 }
 

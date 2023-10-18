@@ -3,16 +3,36 @@
  * check_exit - Check and handle the 'exit' command.
  * @command: The command passed in as input.
  */
-void check_exit(char *command)
+void check_exit(char **argv)
 {
-	int p;
+	int p, staat;
+	char *ptr = "exit";
 
-	p = strcmp("exit", command);
-	if (p == 0)
+	if (argv_len(argv) == 1)
 	{
-		free(command);
+		p = strcmp(ptr, argv[0]);
+		if (p != 0)
+			return;
+		free_argv(argv);
 		exit(EXIT_SUCCESS);
 	}
+	else
+	{
+		if (strcmp(ptr, argv[0]) != 0)
+				return;
+		str_strip(argv[1]);
+		staat = _atoi(argv[1]);
+		if (staat == -1)
+		{
+			write(STDERR_FILENO, "./hsh: 1: exit: Illegal number: ", 32);
+			write(STDERR_FILENO, argv[1], _strlen(argv[1]));
+			write(STDERR_FILENO, "\n", 1);
+			free_argv(argv);
+			exit(2);
+		}
+	}
+	free_argv(argv);
+	exit(staat);
 }
 
 /**
