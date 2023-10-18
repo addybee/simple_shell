@@ -40,8 +40,8 @@ void str_strip(char *s)
 		return;
 	len = _strlen(s);
 	/* Find the index of the first non-whitespace character */
-	for (i = 0; ((i < len) && ( s[i] == ' ' ||
-				s[i] == '\t' || s[i] == '\n')); i++) 
+	for (i = 0; ((i < len) && (s[i] == ' ' ||
+				s[i] == '\t' || s[i] == '\n')); i++)
 	{};
 	/* Shift the non-whitespace characters to the beginning of the string*/
 	for (j = 0; i < len; i++, j++)

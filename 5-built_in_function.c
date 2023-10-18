@@ -19,7 +19,7 @@ void check_exit(char **argv)
 	else
 	{
 		if (strcmp(ptr, argv[0]) != 0)
-				return;
+			return;
 		str_strip(argv[1]);
 		staat = _atoi(argv[1]);
 		if (staat == -1)
