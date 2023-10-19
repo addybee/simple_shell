@@ -144,7 +144,7 @@ char *handle_path(char *command)
 
 /**
  * parse_cmd - expands input command to its function
- * @vp: array of input command and its arguement
+ * @argv: array of input command and its arguement
  * @res: holds the result of the output func
  */
 void parse_cmd(char **argv, int *res)
