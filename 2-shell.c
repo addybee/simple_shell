@@ -9,6 +9,7 @@ int run_shell(char **argv)
 	char *input_line = NULL;
 	size_t input_len = 0;
 	ssize_t read_char = 0;
+	int res = 0;
 
 	while (1)
 	{
@@ -39,6 +40,9 @@ int run_shell(char **argv)
 		}
 		free(input_line);
 		input_line = NULL;
+		parse_cmd(argv, &res);
+		if (res)
+			continue;
 		exec_cmd(argv);
 	}
 	return (1);

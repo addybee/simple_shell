@@ -1,13 +1,11 @@
 #ifndef MAIN_H
 #define MAIN_H
 #include <sys/wait.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <ctype.h>
 extern char **environ;
 void print_prompt(void);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
@@ -16,8 +14,8 @@ void exec_cmd(char **argv);
 char **get_argv(char *command);
 int  run_shell(char **argv);
 void free_argv(char **argv);
+int check_exit(char **cmd);
 int check_env(char *command);
-void check_exit(char **cmd);
 void str_strip(char *s);
 char *get_env(char *name);
 char *_strcpy(char *dest, char *src);
@@ -32,4 +30,18 @@ size_t _strcspn(char *s, const char *reject);
 size_t _strspn(char *s, const char *accept);
 char *_strtok(char * str, const char *delim);
 int argv_len(char **argv);
+int add_var(char *new_var);
+int _setenv(char *var, char *value);
+int check_set(char **argv);
+void parse_cmd(char **argv, int *res);
+/**
+ * struct builtin_cmd_and_func -  hold the cmd and function
+ * @cmd: command type
+ * @f: function to call if the command type is inputed
+ */
+typedef struct builtin_cmd_and_func
+{
+	char *cmd;
+	int (*f)(char **);
+} bc;
 #endif

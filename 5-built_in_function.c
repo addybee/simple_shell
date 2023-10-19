@@ -1,38 +1,33 @@
 #include "main.h"
 /**
  * check_exit - Check and handle the 'exit' command.
- * @command: The command passed in as input.
+ * @argv: The command passed in as input.
+ * Return: 0 when failed
  */
-void check_exit(char **argv)
+int check_exit(char **argv)
 {
-	int p, staat;
-	char *ptr = "exit";
+	int staat;
 
 	if (argv_len(argv) == 1)
 	{
-		p = strcmp(ptr, argv[0]);
-		if (p != 0)
-			return;
 		free_argv(argv);
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		if (strcmp(ptr, argv[0]) != 0)
-			return;
 		str_strip(argv[1]);
 		staat = _atoi(argv[1]);
-		if (staat == -1)
+		if (staat != -1)
 		{
-			write(STDERR_FILENO, "./hsh: 1: exit: Illegal number: ", 32);
-			write(STDERR_FILENO, argv[1], _strlen(argv[1]));
-			write(STDERR_FILENO, "\n", 1);
 			free_argv(argv);
-			exit(2);
+			exit(staat);
 		}
 	}
+	write(STDERR_FILENO, "./hsh: 1: exit: Illegal number: ", 32);
+	write(STDERR_FILENO, argv[1], _strlen(argv[1]));
+	write(STDERR_FILENO, "\n", 1);
 	free_argv(argv);
-	exit(staat);
+	return (0);
 }
 
 /**
@@ -57,4 +52,27 @@ int check_env(char *command)
 		return (1);
 	}
 	return (0);
+}
+
+/**
+ * check_set - Check and handle the 'setenv' command.
+ * @argv: The command passed in as input.
+ * Return: 1 on success and 0 on failure
+ */
+int check_set(char **argv)
+{
+	if (argv_len(argv) < 3)
+	{
+		free_argv(argv);
+		return (0);
+	}
+	if (_setenv(argv[1], argv[2]) == 0)
+	{	free_argv(argv);
+		return (1);
+	}
+	write(STDERR_FILENO, "./hsh: 1: setenv: Error setting: ", 32);
+	write(STDERR_FILENO, argv[2], _strlen(argv[2]));
+	write(STDERR_FILENO, "\n", 1);
+	free_argv(argv);
+        return (0);
 }

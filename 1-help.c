@@ -10,7 +10,8 @@ void exec_cmd(char **argv)
 	pid_t pid = 0;
 	int wstatus;
 
-	check_exit(argv);
+	if (!argv)
+		return;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -27,7 +28,7 @@ void exec_cmd(char **argv)
 
 			write(STDERR_FILENO, sh, _strlen(sh));
 			write(STDERR_FILENO, argv[0], _strlen(argv[0]));
-			write(STDERR_FILENO, rt, strlen(rt));
+			write(STDERR_FILENO, rt, _strlen(rt));
 			fflush(stderr);
 			free_argv(argv);
 			exit(127);
@@ -143,3 +144,30 @@ char *handle_path(char *command)
 	free(dup_path_var);
 	return (NULL);
 }
+
+/**
+ * parse_cmd - expands input command to its function
+ * @vp: array of input command and its arguement
+ * @res: holds the result of the output func
+ */
+void parse_cmd(char **argv, int *res)
+{
+	int k;
+	bc cmd_s[4] = {
+	{"exit", check_exit},
+	{"setenv", check_set},
+	{NULL, NULL}
+	};
+
+	for (k = 0; cmd_s[k].cmd; k++)
+	{
+		if (_strcmp(argv[0], cmd_s[k].cmd) == 0)
+		{
+			*res = cmd_s[k].f(argv);
+			break;
+		}
+	}
+	*res = 0;
+	return;
+}
+
