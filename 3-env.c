@@ -71,7 +71,10 @@ int _setenv(char *var, char *value)
 		int result = add_var(new_var);
 
 		if (result == -1)
+		{
+			free(new_var);
 			return (-1);
+		}
 	}
 	return (0);
 }
@@ -89,7 +92,6 @@ int add_var(char *new_var)
 	new_env = (char **)malloc(len * sizeof(char *));
 	if (!new_env)
 	{
-		free(new_var);
 		return (-1);
 	}
 	for (i = 0; *env; env++, i++)

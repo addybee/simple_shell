@@ -29,15 +29,12 @@ void exec_cmd(char **argv)
 			write(STDERR_FILENO, sh, _strlen(sh));
 			write(STDERR_FILENO, argv[0], _strlen(argv[0]));
 			write(STDERR_FILENO, rt, _strlen(rt));
-			fflush(stderr);
 			free_argv(argv);
 			exit(127);
 		}
 		if (execve(cmd, argv, env) == -1)
 		{
 			perror("./hsh");
-			free_argv(argv);
-			exit(126);
 		}
 	}
 	if (wait(&wstatus) == -1)
@@ -168,6 +165,5 @@ void parse_cmd(char **argv, int *res)
 		}
 	}
 	*res = 0;
-	return;
 }
 

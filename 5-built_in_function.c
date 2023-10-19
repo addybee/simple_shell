@@ -61,18 +61,15 @@ int check_env(char *command)
  */
 int check_set(char **argv)
 {
-	if (argv_len(argv) < 3)
+	if (argv_len(argv) == 3)
 	{
-		free_argv(argv);
-		return (0);
+		if (_setenv(argv[1], argv[2]) == 0)
+		{	free_argv(argv);
+			return (1);
+		}
 	}
-	if (_setenv(argv[1], argv[2]) == 0)
-	{	free_argv(argv);
-		return (1);
-	}
-	write(STDERR_FILENO, "./hsh: 1: setenv: Error setting: ", 32);
-	write(STDERR_FILENO, argv[2], _strlen(argv[2]));
+	write(STDERR_FILENO, "./hsh: 1: setenv: Error setting:", 32);
 	write(STDERR_FILENO, "\n", 1);
 	free_argv(argv);
-        return (0);
+	return (0);
 }
